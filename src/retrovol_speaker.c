@@ -18,65 +18,40 @@ const char string9[22] = ";stroke-width:7\"/>\n";
 const char string10[9] = "</svg>\n";
 const char stringX[101] = "\t<line x1=\"5\" y1=\"75\" x2=\"60\" y2=\"20\" style=\"fill:none;stroke:red;stroke-width:7\"/>\n";
 
-
-FILE *fp0;
-FILE *fp1;
-FILE *fp2;
-FILE *fp3;
-FILE *fp4;
-	
+FILE *fp;
+char file_to[5][256];	
 
 static void print_output(char *colour) {
+	strcpy(file_to[0], "/usr/share/retrovol/images/audio-volume-high.svg");
+	strcpy(file_to[1], "/usr/share/retrovol/images/audio-volume-medium.svg");
+	strcpy(file_to[2], "/usr/share/retrovol/images/audio-volume-low.svg");
+	strcpy(file_to[3], "/usr/share/retrovol/images/audio-volume-none.svg");
+	strcpy(file_to[4], "/usr/share/retrovol/images/audio-volume-muted.svg");
+	
 	int j;
-	for (j = 1; j <= 5; j++)
-	{
-		if (j == 1)
-		{
-			fp0 = fopen("/usr/share/retrovol/images/audio-volume-high.svg", "w");
-			if (!fp0) return;
-			fprintf(fp0,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
-			fprintf(fp0,"%s%s%s",string4,ray_colour,string5);
-			fprintf(fp0,"%s%s%s",string6,ray_colour,string7);
-			fprintf(fp0,"%s%s%s",string8,ray_colour,string9);
-			fprintf(fp0,"%s",string10); //common to all
-			fclose(fp0);
+	for (j = 0; j < 5; j++) {
+		fp= fopen(file_to[j], "w");
+		if (!fp) {
+			fprintf(stderr, "Couldn't open %s for writing\n", file_to[j]);
+			return;
 		}
-		else if (j == 2)
-		{
-			fp1 = fopen("/usr/share/retrovol/images/audio-volume-medium.svg", "w");
-			if (!fp1) return;
-			fprintf(fp1,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
-			fprintf(fp1,"%s%s%s",string4,ray_colour,string5);
-			fprintf(fp1,"%s%s%s",string6,ray_colour,string7);
-			fprintf(fp1,"%s",string10); //common to all
-			fclose(fp1);
+		fprintf(fp,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
+		if (j == 0) {
+			fprintf(fp,"%s%s%s",string4,ray_colour,string5);
+			fprintf(fp,"%s%s%s",string6,ray_colour,string7);
+			fprintf(fp,"%s%s%s",string8,ray_colour,string9);
+		} else if (j == 1) {
+			fprintf(fp,"%s%s%s",string4,ray_colour,string5);
+			fprintf(fp,"%s%s%s",string6,ray_colour,string7);
+		} else if (j == 2) {
+			fprintf(fp,"%s%s%s",string4,ray_colour,string5);
+		} else if (j == 3) {
+			fprintf(fp,""); //dummy
+		} else if (j == 4) {
+			fprintf(fp,"%s",stringX);
 		}
-		else if (j == 3)
-		{
-			fp2 = fopen("/usr/share/retrovol/images/audio-volume-low.svg", "w");
-			if (!fp2) return;
-			fprintf(fp2,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
-			fprintf(fp2,"%s%s%s",string4,ray_colour,string5);
-			fprintf(fp2,"%s",string10); //common to all
-			fclose(fp2);
-		}	
-		else if (j == 4)
-		{
-			fp3 = fopen("/usr/share/retrovol/images/audio-volume-none.svg", "w");
-			if (!fp3) return;
-			fprintf(fp3,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
-			fprintf(fp3,"%s",string10); //common to all
-			fclose(fp3);
-		}
-		else if (j == 5)
-		{
-			fp4 = fopen("/usr/share/retrovol/images/audio-volume-muted.svg", "w");	
-			if (!fp4) return;
-			fprintf(fp4,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
-			fprintf(fp4,"%s",stringX);
-			fprintf(fp4,"%s",string10); //common to all
-			fclose(fp4);
-		}
+		fprintf(fp,"%s",string10); //common to all
+		fclose(fp);
 	}
 }
 
