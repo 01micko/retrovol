@@ -414,6 +414,7 @@ static void update_color(GtkWidget *widget, gpointer data){
 	ConfigSettings::gtonf((float *)data, &color);
 }
 
+//re-color the speaker tray icon
 static void new_color(GtkWidget *widget, gpointer data){
 	GdkColor color;
 	gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), &color);
@@ -494,7 +495,7 @@ void add_entry_color(GtkWidget *vbox, const char *label_text, float *item){
 	g_signal_connect(color_button, "color-set", G_CALLBACK(update_color), item);
 }
 
-//create an entry to edit a speaker color
+//create an entry to edit the speaker icon color
 void add_entry_color_s(GtkWidget *vbox, const char *label_text){
 	GtkWidget *hbox = gtk_hbox_new(TRUE, 2);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
@@ -571,7 +572,7 @@ void build_config_window(ConfigSettings *settings){
 		tray_slider_swap_struc.adj_B = add_entry_uint(vbox, _("Tray Slider Height"), tray_slider_swap_struc.iB);
 		add_entry_int(vbox, _("Tray Slider Offset"), &tmp_settings.tray_slider_offset);
 		add_entry_bool_c(vbox, _("Enable Tray Icon Background Color"), &tmp_settings.enable_tray_icon_background_color);
-		add_entry_color_s(vbox, _("Tray Icon Foreground Color")); //dummy value as we don't save it
+		add_entry_color_s(vbox, _("Tray Icon Foreground Color")); //no value as we don't save it
 		add_entry_color(vbox, _("Tray Icon Background Color"), tmp_settings.tray_icon_background_color);
 	}
 
