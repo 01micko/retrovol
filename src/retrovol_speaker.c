@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include "retrovol_speaker.h"
 
 const char ray_colour[8] = "#FFCC00";
