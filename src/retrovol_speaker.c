@@ -33,7 +33,7 @@ static void print_output(char *colour) {
 		if (j == 1)
 		{
 			fp0 = fopen("/usr/share/retrovol/images/audio-volume-high.svg", "w");
-			if (!fp0) exit(1);
+			if (!fp0) return;
 			fprintf(fp0,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
 			fprintf(fp0,"%s%s%s",string4,ray_colour,string5);
 			fprintf(fp0,"%s%s%s",string6,ray_colour,string7);
@@ -44,7 +44,7 @@ static void print_output(char *colour) {
 		else if (j == 2)
 		{
 			fp1 = fopen("/usr/share/retrovol/images/audio-volume-medium.svg", "w");
-			if (!fp1) exit(1);
+			if (!fp1) return;
 			fprintf(fp1,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
 			fprintf(fp1,"%s%s%s",string4,ray_colour,string5);
 			fprintf(fp1,"%s%s%s",string6,ray_colour,string7);
@@ -54,7 +54,7 @@ static void print_output(char *colour) {
 		else if (j == 3)
 		{
 			fp2 = fopen("/usr/share/retrovol/images/audio-volume-low.svg", "w");
-			if (!fp2) exit(1);
+			if (!fp2) return;
 			fprintf(fp2,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
 			fprintf(fp2,"%s%s%s",string4,ray_colour,string5);
 			fprintf(fp2,"%s",string10); //common to all
@@ -63,7 +63,7 @@ static void print_output(char *colour) {
 		else if (j == 4)
 		{
 			fp3 = fopen("/usr/share/retrovol/images/audio-volume-none.svg", "w");
-			if (!fp3) exit(1);
+			if (!fp3) return;
 			fprintf(fp3,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
 			fprintf(fp3,"%s",string10); //common to all
 			fclose(fp3);
@@ -71,7 +71,7 @@ static void print_output(char *colour) {
 		else if (j == 5)
 		{
 			fp4 = fopen("/usr/share/retrovol/images/audio-volume-muted.svg", "w");	
-			if (!fp4) exit(1);
+			if (!fp4) return;
 			fprintf(fp4,"%s%s%s%s%s%s%s",head1,head2,string1,colour,string2,colour,string3); //common to all
 			fprintf(fp4,"%s",stringX);
 			fprintf(fp4,"%s",string10); //common to all
