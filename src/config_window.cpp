@@ -418,7 +418,7 @@ static void update_color(GtkWidget *widget, gpointer data){
 static void new_color(GtkWidget *widget, gpointer data){
 	GdkColor color;
 	gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), &color);
-	sprintf(speaker_color,"#%02hhX%02hhX%02hhX\n", color.red>>8, color.green>>8, 
+	sprintf(speaker_color,"#%02hhX%02hhX%02hhX", color.red>>8, color.green>>8, 
 	       color.blue>>8);
 	change_color(speaker_color);
 }
