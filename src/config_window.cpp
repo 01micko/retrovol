@@ -13,7 +13,9 @@
 #include "alsa_classes.h"
 #include "config_settings.h"
 #include "config_window.h"
-
+extern "C"{
+	#include "retrovol_speaker.h"
+}
 //i18n stuff
 #include "gettext.h"
 #include <locale.h>
@@ -26,6 +28,7 @@ GtkWidget *window;
 SwapStruc slider_swap_struc;
 SwapStruc tray_slider_swap_struc;
 OrderWidget order_widget;
+char speaker_color[14]; //avoid stack smashing
 
 void SwapStruc::swap(){
 	int tmp = *iA;
@@ -411,6 +414,14 @@ static void update_color(GtkWidget *widget, gpointer data){
 	ConfigSettings::gtonf((float *)data, &color);
 }
 
+static void new_color(GtkWidget *widget, gpointer data){
+	GdkColor color;
+	gtk_color_button_get_color(GTK_COLOR_BUTTON(widget), &color);
+	sprintf(speaker_color,"#%02hhX%02hhX%02hhX\n", color.red>>8, color.green>>8, 
+	       color.blue>>8);
+	change_color(speaker_color);
+}
+
 //update the int pointed to by the data pointer with the value contained by the combo box widget
 static void update_int_combo(GtkWidget *widget, gpointer data){
 	*(int*)data = (int)gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
@@ -483,6 +494,18 @@ void add_entry_color(GtkWidget *vbox, const char *label_text, float *item){
 	g_signal_connect(color_button, "color-set", G_CALLBACK(update_color), item);
 }
 
+//create an entry to edit a speaker color
+void add_entry_color_s(GtkWidget *vbox, const char *label_text){
+	GtkWidget *hbox = gtk_hbox_new(TRUE, 2);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
+	GtkWidget *label = gtk_label_new(label_text);
+	gtk_container_add(GTK_CONTAINER(hbox), label);
+	GtkWidget *button = gtk_color_button_new();
+	gtk_color_button_set_use_alpha(GTK_COLOR_BUTTON(button), FALSE);
+	gtk_container_add(GTK_CONTAINER(hbox), button);
+	g_signal_connect(button, "color-set", G_CALLBACK(new_color), NULL);
+}
+
 //create a preferences window
 void build_config_window(ConfigSettings *settings){
 	load_settings(settings);
@@ -548,6 +571,7 @@ void build_config_window(ConfigSettings *settings){
 		tray_slider_swap_struc.adj_B = add_entry_uint(vbox, _("Tray Slider Height"), tray_slider_swap_struc.iB);
 		add_entry_int(vbox, _("Tray Slider Offset"), &tmp_settings.tray_slider_offset);
 		add_entry_bool_c(vbox, _("Enable Tray Icon Background Color"), &tmp_settings.enable_tray_icon_background_color);
+		add_entry_color_s(vbox, _("Tray Icon Foreground Color")); //dummy value as we don't save it
 		add_entry_color(vbox, _("Tray Icon Background Color"), tmp_settings.tray_icon_background_color);
 	}
 
