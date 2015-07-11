@@ -20,6 +20,7 @@
 #include "config_settings.h"
 #include "config_window.h"
 #include "main.h"
+#include "retrovol_speaker.h"
 #if ! GTK_CHECK_VERSION(2,16,0)
 	#include "eggtrayicon.h"
 #endif

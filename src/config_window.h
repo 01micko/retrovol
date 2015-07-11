@@ -106,8 +106,8 @@ static void new_color(GtkWidget *widget, gpointer data);
 //create an entry to edit a color value
 void add_entry_color(GtkWidget *vbox, const char *label_text, float *item);
 
-//create an entry to edit a color value
-void add_entry_color_s(GtkWidget *vbox, const char *label_text);
+//create an entry to edit the speaker color
+void add_entry_color_icon(GtkWidget *vbox, const char *label_text);
 
 //create a preferences window
 void build_config_window(ConfigSettings *settings);

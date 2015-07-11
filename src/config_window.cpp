@@ -495,14 +495,15 @@ void add_entry_color(GtkWidget *vbox, const char *label_text, float *item){
 	g_signal_connect(color_button, "color-set", G_CALLBACK(update_color), item);
 }
 
-//create an entry to edit the speaker icon color
-void add_entry_color_s(GtkWidget *vbox, const char *label_text){
+//create an entry to edit the speaker color
+void add_entry_color_icon(GtkWidget *vbox, const char *label_text){
 	GtkWidget *hbox = gtk_hbox_new(TRUE, 2);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 0);
 	GtkWidget *label = gtk_label_new(label_text);
 	gtk_container_add(GTK_CONTAINER(hbox), label);
 	GtkWidget *button = gtk_color_button_new();
 	gtk_color_button_set_use_alpha(GTK_COLOR_BUTTON(button), FALSE);
+	gtk_color_button_set_title (GTK_COLOR_BUTTON(button), _("Choose color. You may need to restart Retrovol."));
 	gtk_container_add(GTK_CONTAINER(hbox), button);
 	g_signal_connect(button, "color-set", G_CALLBACK(new_color), NULL);
 }
@@ -571,8 +572,8 @@ void build_config_window(ConfigSettings *settings){
 		tray_slider_swap_struc.adj_A = add_entry_uint(vbox, _("Tray Slider Width"), tray_slider_swap_struc.iA);
 		tray_slider_swap_struc.adj_B = add_entry_uint(vbox, _("Tray Slider Height"), tray_slider_swap_struc.iB);
 		add_entry_int(vbox, _("Tray Slider Offset"), &tmp_settings.tray_slider_offset);
+		add_entry_color_icon(vbox, _("Tray Icon Foreground Color")); //no value as we don't save it to config
 		add_entry_bool_c(vbox, _("Enable Tray Icon Background Color"), &tmp_settings.enable_tray_icon_background_color);
-		add_entry_color_s(vbox, _("Tray Icon Foreground Color")); //no value as we don't save it
 		add_entry_color(vbox, _("Tray Icon Background Color"), tmp_settings.tray_icon_background_color);
 	}
 

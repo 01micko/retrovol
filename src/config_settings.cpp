@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h> //this is needed due to retro
+#include <unistd.h>
 #include "retro_slider.h"
 #include "alsa_classes.h"
 #include "config_settings.h"
@@ -17,9 +18,16 @@
 #include "gettext.h"
 #include <locale.h>
 #define _(String) gettext (String)
+#define IMG_DIR "/.retrovol/"
 
 
 ConfigSettings::ConfigSettings(){
+	//define a storage dir for icons in HOME
+	char home[256];
+	strcpy(home, getenv("HOME"));
+	char img_dir[256];
+	sprintf(img_dir, "%s%s", home, IMG_DIR);
+	
 	num_numids = 0;
 	//defaults
 	strcpy(_d_card, "hw:0");
@@ -63,12 +71,21 @@ ConfigSettings::ConfigSettings(){
 	_d_tray_slider_height=102;
 	_d_tray_slider_offset=-1;
 	
-	
-	strcpy(icon_file_names[0], VOL_MUTED_IMAGE);
-	strcpy(icon_file_names[1], VOL_NONE_IMAGE);
-	strcpy(icon_file_names[2], VOL_LOW_IMAGE);
-	strcpy(icon_file_names[3], VOL_MEDIUM_IMAGE);
-	strcpy(icon_file_names[4], VOL_HIGH_IMAGE);
+	//use user's HOME icons
+	if (access(img_dir, F_OK) == 0) {
+		sprintf(icon_file_names[0], "%s%s", img_dir, const_cast<char *>("audio-volume-muted.svg"));
+		sprintf(icon_file_names[1], "%s%s", img_dir, const_cast<char *>( "audio-volume-none.svg"));
+		sprintf(icon_file_names[2], "%s%s", img_dir, const_cast<char *>( "audio-volume-low.svg"));
+		sprintf(icon_file_names[3], "%s%s", img_dir, const_cast<char *>( "audio-volume-medium.svg"));
+		sprintf(icon_file_names[4], "%s%s", img_dir, const_cast<char *>( "audio-volume-high.svg"));
+	//use default icons
+	} else {
+		strcpy(icon_file_names[0], VOL_MUTED_IMAGE);
+		strcpy(icon_file_names[1], VOL_NONE_IMAGE);
+		strcpy(icon_file_names[2], VOL_LOW_IMAGE);
+		strcpy(icon_file_names[3], VOL_MEDIUM_IMAGE);
+		strcpy(icon_file_names[4], VOL_HIGH_IMAGE);
+	}
 
 	tray_icon = NULL;
 	tray_icon_image = NULL;

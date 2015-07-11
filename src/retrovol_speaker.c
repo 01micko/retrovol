@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
 #include "retrovol_speaker.h"
+#define FILE_PATH 	"/.retrovol/"
 
+//Speaker rays <))) mirror the originals
 const char ray_colour[8] = "#FFCC00";
+//SVG icon framework
 const char head1[45] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 const char head2[85] = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" height=\"100\" width=\"100\">\n";
 const char string1[83] = "\t<polygon points=\"10 60,  10 40,  20 40,  40 25, 40 75, 20 60, 10 60\" style=\"fill:"; //colour;
@@ -14,19 +20,33 @@ const char string6[73] = "\t<path d=\"M 63,15 C 100,53 62,88 62,88\" style=\"fil
 const char string7[22] = ";stroke-width:7\"/>\n";
 const char string8[72] = "\t<path d=\"M 72,5 C 120,54 73,97 73,97\" style=\"fill:none;stroke:"; //colour;
 const char string9[22] = ";stroke-width:7\"/>\n";
-const char string10[9] = "</svg>\n";
+const char foot[9] = "</svg>\n";
 const char stringX[101] = "\t<line x1=\"5\" y1=\"75\" x2=\"60\" y2=\"20\" style=\"fill:none;stroke:red;stroke-width:7\"/>\n";
 
 FILE *fp;
 char file_to[5][256];	
 
-static void print_output(char *colour) {
-	strcpy(file_to[0], "/usr/share/retrovol/images/audio-volume-high.svg");
-	strcpy(file_to[1], "/usr/share/retrovol/images/audio-volume-medium.svg");
-	strcpy(file_to[2], "/usr/share/retrovol/images/audio-volume-low.svg");
-	strcpy(file_to[3], "/usr/share/retrovol/images/audio-volume-none.svg");
-	strcpy(file_to[4], "/usr/share/retrovol/images/audio-volume-muted.svg");
+void change_color(char *colour) {
+	char home[256];
+	strcpy(home, getenv("HOME"));
+	char img_dir[256];
+	sprintf(img_dir, "%s%s", home, FILE_PATH);
+	// define where images are to be made
+	sprintf(file_to[0], "%saudio-volume-high.svg", img_dir);
+	sprintf(file_to[1], "%saudio-volume-medium.svg", img_dir);
+	sprintf(file_to[2], "%saudio-volume-low.svg", img_dir);
+	sprintf(file_to[3], "%saudio-volume-none.svg", img_dir);
+	sprintf(file_to[4], "%saudio-volume-muted.svg", img_dir);
 	
+	//make directory
+	char icon_dir[256];
+	sprintf(icon_dir,"%s%s", home, FILE_PATH);
+	int icon_access;
+	icon_access =  access(icon_dir, F_OK);
+	if (icon_access != 0) {
+		if (mkdir(icon_dir, 0755) != 0) return;
+	}
+	//build the icons
 	int j;
 	for (j = 0; j < 5; j++) {
 		fp= fopen(file_to[j], "w");
@@ -49,12 +69,7 @@ static void print_output(char *colour) {
 		} else if (j == 4) {
 			fprintf(fp,"%s",stringX);
 		}
-		fprintf(fp,"%s",string10); //common to all
+		fprintf(fp,"%s",foot); //common to all
 		fclose(fp);
 	}
-}
-
-int change_color(char *sel_color) {
-	print_output(sel_color);
-	return 0;
 }
