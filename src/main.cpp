@@ -281,6 +281,11 @@ void close_window( GtkWidget *w, gpointer data){
 	}
 }
 
+void open_wizard(GtkWidget *w, gpointer data){
+	system("Multiple-Sound-Card-Wizard &");
+}
+
+
 //Returns a menubar widget made from the passed menu_items
 GtkWidget *get_menubar_menu( GtkWidget  *window, GtkItemFactoryEntry *menu_items, gint nmenu_items, const char *menu_name )
 {
@@ -313,15 +318,19 @@ void set_menu(){
 		GtkWidget *exit_entry = gtk_image_menu_item_new_with_mnemonic(_("_Exit"));
 		GtkWidget *config_entry = gtk_image_menu_item_new_with_mnemonic(_("_Config Window"));
 		GtkWidget *show_entry = gtk_image_menu_item_new_with_mnemonic(_("_Full Window"));
+
 		GtkWidget *exit_icon = gtk_image_new_from_stock(GTK_STOCK_QUIT, GTK_ICON_SIZE_MENU);
 		GtkWidget *config_icon = gtk_image_new_from_stock(GTK_STOCK_EXECUTE, GTK_ICON_SIZE_MENU);
 		GtkWidget *show_icon = gtk_image_new_from_stock(GTK_STOCK_PREFERENCES, GTK_ICON_SIZE_MENU);
+
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(exit_entry), exit_icon);
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(config_entry), config_icon);
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(show_entry), show_icon);
+		
 		g_signal_connect(G_OBJECT(exit_entry), "activate", G_CALLBACK(gtk_main_quit), NULL);
 		g_signal_connect(G_OBJECT(config_entry), "activate", G_CALLBACK(configure), NULL);
 		g_signal_connect(G_OBJECT(show_entry), "activate", G_CALLBACK(open_window), NULL);
+		
 		if (G_IS_OBJECT(settings.tray_icon_menu)){
 			gtk_widget_destroy(settings.tray_icon_menu);
 		}
@@ -351,6 +360,13 @@ void set_menu(){
 			//taskbar is on bottom, so put show_entry on bottom for ergonomics
 			tray_at_bottom = true;
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), exit_entry);
+			if (access("/usr/bin/Multiple-Sound-Card-Wizard", X_OK) == 0) {
+				GtkWidget *show_wizard_entry = gtk_image_menu_item_new_with_mnemonic(_("Card _Wizard"));
+				GtkWidget *show_wizard_icon = gtk_image_new_from_stock(GTK_STOCK_PROPERTIES, GTK_ICON_SIZE_MENU);
+				gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(show_wizard_entry), show_wizard_icon);
+				g_signal_connect(G_OBJECT(show_wizard_entry), "activate", G_CALLBACK(open_wizard), NULL);
+				gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), show_wizard_entry);
+			}
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), config_entry);
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), show_entry);
 		} else {
@@ -358,6 +374,13 @@ void set_menu(){
 			tray_at_bottom = false;
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), show_entry);
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), config_entry);
+			if (access("/usr/bin/Multiple-Sound-Card-Wizard", X_OK) == 0) {
+				GtkWidget *show_wizard_entry = gtk_image_menu_item_new_with_mnemonic(_("Card _Wizard"));
+				GtkWidget *show_wizard_icon = gtk_image_new_from_stock(GTK_STOCK_PROPERTIES, GTK_ICON_SIZE_MENU);
+				gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(show_wizard_entry), show_wizard_icon);
+				g_signal_connect(G_OBJECT(show_wizard_entry), "activate", G_CALLBACK(open_wizard), NULL);
+				gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), show_wizard_entry);
+			}
 			gtk_menu_shell_append(GTK_MENU_SHELL(settings.tray_icon_menu), exit_entry);
 		}
 		
