@@ -6,20 +6,20 @@
 #include "retrovol_speaker.h"
 #define FILE_PATH 	"/.retrovol/"
 
-//Speaker rays <))) mirror the originals
-const char ray_colour[8] = "#FFCC00";
+//Speaker rays <)))
+char ray_colour[8];
 //SVG icon framework
 const char head1[45] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 const char head2[85] = "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" height=\"100\" width=\"100\">\n";
 const char string1[83] = "\t<polygon points=\"10 60,  10 40,  20 40,  40 25, 40 75, 20 60, 10 60\" style=\"fill:"; //colour;
 const char string2[28] = ";fill-opacity: 0.5; stroke:"; //colour;
 const char string3[24] = ";stroke-width: 2;\"/>\n";
-const char string4[70] = "\t<path d=\"M 55,27 c 24,23 0,48 0,48\" style=\"fill:none;stroke:"; //colour;
-const char string5[22] = ";stroke-width:7\"/>\n";
-const char string6[73] = "\t<path d=\"M 63,15 C 100,53 62,88 62,88\" style=\"fill:none;stroke:"; //colour;
-const char string7[22] = ";stroke-width:7\"/>\n";
-const char string8[72] = "\t<path d=\"M 72,5 C 120,54 73,97 73,97\" style=\"fill:none;stroke:"; //colour;
-const char string9[22] = ";stroke-width:7\"/>\n";
+const char string4[70] = "\t<path d=\"m 50,30 c 20,20 0,42 0,42\" style=\"fill:none;stroke:"; //colour;
+const char string5[22] = ";stroke-width:4\"/>\n";
+const char string6[73] = "\t<path d=\"m 60,20 c 30,30 0,62 0,62\" style=\"fill:none;stroke:"; //colour;
+const char string7[22] = ";stroke-width:4\"/>\n";
+const char string8[72] = "\t<path d=\"m 70,10 c 40,40 0,82 0,82\" style=\"fill:none;stroke:"; //colour;
+const char string9[22] = ";stroke-width:4\"/>\n";
 const char foot[9] = "</svg>\n";
 const char stringX[101] = "\t<line x1=\"5\" y1=\"75\" x2=\"60\" y2=\"20\" style=\"fill:none;stroke:red;stroke-width:7\"/>\n";
 
@@ -29,6 +29,7 @@ char file_to[5][256];
 void change_color(char *colour) {
 	char home[256];
 	strcpy(home, getenv("HOME"));
+	strcpy(ray_colour, colour);
 	char img_dir[256];
 	sprintf(img_dir, "%s%s", home, FILE_PATH);
 	// define where images are to be made
