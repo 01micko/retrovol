@@ -699,7 +699,7 @@ bool loop(int argc, char** argv) {
 		} else {
 			alignment = gtk_alignment_new(1.0,0.5,0,0);
 			gtk_box_pack_start(GTK_BOX(vbox), alignment, false, false, 0);
-			strcpy(wrapped, list.items[i]->short_name);
+			snprintf(wrapped, sizeof(wrapped), "  %s", list.items[i]->short_name);
 		}
 		GtkWidget *label;
 		label = gtk_label_new(wrapped);
